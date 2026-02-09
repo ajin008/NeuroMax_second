@@ -13,12 +13,15 @@ const ClassSelector = ({ selected, onSelect }: Props) => {
   ];
 
   return (
-    <section className="bg-black pb-24 px-6">
+    <section className="bg-black pb-24 px-6 relative">
+      {/* Subtle background glow to separate the section */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-linear-to-r from-transparent via-amber-500/20 to-transparent" />
+
       <div className="max-w-5xl mx-auto flex flex-col items-center">
-        {/* Minimalist Badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-950 px-4 py-1.5 mb-10">
-          <span className="text-blue-500 text-xs">✦</span>
-          <span className="text-[10px] font-bold tracking-[0.2em] text-zinc-400 uppercase">
+        {/* Amber Badge */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/5 px-4 py-1.5 mb-10">
+          <span className="text-amber-500 text-[10px] animate-pulse">✦</span>
+          <span className="text-[10px] font-bold tracking-[0.2em] text-amber-500/80 uppercase">
             Exclusive Batch Selection
           </span>
         </div>
@@ -29,39 +32,48 @@ const ClassSelector = ({ selected, onSelect }: Props) => {
             <button
               key={grade.id}
               onClick={() => onSelect(grade.id)}
-              className={`relative flex flex-col items-center justify-center p-10 rounded-[2.5rem] transition-all duration-300 border backdrop-blur-sm ${
+              className={`relative flex flex-col items-center justify-center p-10 rounded-[2.5rem] transition-all duration-500 border backdrop-blur-sm group ${
                 selected === grade.id
-                  ? "bg-zinc-900/60 border-blue-500/50 shadow-[0_0_40px_rgba(59,130,246,0.1)]"
-                  : "bg-zinc-900/20 border-zinc-800 opacity-60 hover:opacity-100"
+                  ? "bg-amber-500/[0.07] border-amber-500/40 shadow-[0_0_50px_rgba(245,158,11,0.05)]"
+                  : "bg-zinc-900/20 border-white/3 opacity-60 hover:opacity-100 hover:border-white/10"
               }`}
             >
-              {/* Active Glow for Selected Card */}
+              {/* Top Accent Line for Selected Card */}
               {selected === grade.id && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]" />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-0.5 bg-linear-to-r from-transparent via-amber-500 to-transparent shadow-[0_0_15px_rgba(245,158,11,0.8)]" />
               )}
 
-              <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">
+              <span
+                className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-2 transition-colors ${
+                  selected === grade.id ? "text-amber-500/60" : "text-zinc-600"
+                }`}
+              >
                 Grade
               </span>
-              <h3 className="text-5xl font-black mb-6 flex items-baseline">
+
+              <h3
+                className={`text-6xl font-black mb-6 flex items-baseline transition-colors ${
+                  selected === grade.id ? "text-white" : "text-zinc-400"
+                }`}
+              >
                 {grade.id}
-                <span className="text-lg font-medium text-zinc-600">th</span>
+                <span className="text-lg font-medium opacity-40 ml-1">th</span>
               </h3>
 
               <div className="flex items-center gap-3">
                 <div
-                  className={`h-5 w-5 rounded-full border flex items-center justify-center transition-colors ${
+                  className={`h-5 w-5 rounded-full border flex items-center justify-center transition-all duration-300 ${
                     selected === grade.id
-                      ? "bg-blue-600 border-blue-600"
-                      : "border-zinc-700"
+                      ? "bg-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"
+                      : "border-zinc-800"
                   }`}
                 >
                   {selected === grade.id && (
-                    <span className="text-white text-[10px]">✓</span>
+                    <span className="text-black text-[10px] font-bold">✓</span>
                   )}
                 </div>
                 <span
-                  className={`text-2xl font-bold ${
+                  className={`text-2xl font-bold transition-colors ${
                     selected === grade.id ? "text-white" : "text-zinc-500"
                   }`}
                 >
@@ -72,16 +84,19 @@ const ClassSelector = ({ selected, onSelect }: Props) => {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4">
-          <p className="text-zinc-500 text-[10px] font-bold tracking-[0.3em] uppercase">
-            🚀 Targeted for 2026 Board Exams
+        {/* Bottom Progress/Indicator */}
+        <div className="mt-12 flex flex-col items-center gap-6">
+          <p className="text-zinc-600 text-[10px] font-bold tracking-[0.3em] uppercase flex items-center gap-2">
+            <span className="h-px w-8 bg-zinc-800" />
+            Targeted for 2026 Board Exams
+            <span className="h-px w-8 bg-zinc-800" />
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {grades.map((g) => (
               <div
                 key={g.id}
-                className={`h-1 rounded-full transition-all duration-500 ${
-                  selected === g.id ? "w-12 bg-blue-600" : "w-6 bg-zinc-800"
+                className={`h-1 rounded-full transition-all duration-700 ${
+                  selected === g.id ? "w-16 bg-amber-500" : "w-4 bg-zinc-900"
                 }`}
               />
             ))}
