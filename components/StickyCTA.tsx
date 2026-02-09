@@ -1,17 +1,19 @@
 "use client";
-import { useRazorpay } from "@/hooks/useRazorpay";
-import { Loader2 } from "lucide-react"; // Import the loader icon
+import { Loader2 } from "lucide-react";
 import React from "react";
 
-interface Props {
+// 1. Define the props to match what you're passing from page.tsx
+interface StickyProps {
   grade: string;
+  onPay: (grade: string) => void;
+  isPaying: boolean;
 }
 
-const StickyCTA = ({ grade }: Props) => {
+const StickyCTA = ({ grade, onPay, isPaying }: StickyProps) => {
   const pricing: Record<string, string> = { "8": "90", "9": "95", "10": "99" };
 
-  // 1. Destructure isLoading from your hook
-  const { handlePayment, isLoading } = useRazorpay();
+  // 2. REMOVED the internal hook:
+  // const { handlePayment, isLoading } = useRazorpay();
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden">
@@ -30,17 +32,17 @@ const StickyCTA = ({ grade }: Props) => {
           </p>
         </div>
 
-        {/* 2. Update Button with loading logic */}
+        {/* 3. Use onPay and isPaying from props */}
         <button
-          onClick={() => handlePayment(grade)}
-          disabled={isLoading} // Prevent double clicks
+          onClick={() => onPay(grade)}
+          disabled={isPaying}
           className={`flex-1 flex items-center justify-center gap-2 bg-blue-600 transition-all text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-[0_0_20px_rgba(37,99,235,0.3)] ${
-            isLoading
+            isPaying
               ? "opacity-70 cursor-not-allowed"
               : "active:scale-95 hover:bg-blue-500"
           }`}
         >
-          {isLoading ? (
+          {isPaying ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
               <span>WAITING...</span>

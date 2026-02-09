@@ -1,10 +1,19 @@
-import { useRazorpay } from "@/hooks/useRazorpay";
 import React from "react";
 import { Loader2 } from "lucide-react";
 
-const Hero = ({ grade }: { grade: string }) => {
+// 1. Define the props to receive data from page.tsx
+interface HeroProps {
+  grade: string;
+  onPay: (grade: string) => void;
+  isPaying: boolean;
+}
+
+const Hero = ({ grade, onPay, isPaying }: HeroProps) => {
   const pricing: Record<string, string> = { "8": "90", "9": "95", "10": "99" };
-  const { handlePayment, isLoading } = useRazorpay();
+
+  // 2. REMOVED: const { handlePayment, isLoading } = useRazorpay();
+  // We use onPay and isPaying from props instead.
+
   return (
     <section className="relative bg-black text-white pt-16 pb-20 px-6 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-125 bg-blue-600/5 blur-[120px] pointer-events-none" />
@@ -56,16 +65,15 @@ const Hero = ({ grade }: { grade: string }) => {
         </div>
 
         <div className="w-full max-w-md flex flex-col items-center gap-6">
+          {/* 3. Update onClick and disabled to use props */}
           <button
-            onClick={() => handlePayment(grade)}
-            disabled={isLoading}
+            onClick={() => onPay(grade)}
+            disabled={isPaying}
             className={`w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 transition-all text-white font-bold py-5 rounded-2xl ${
-              isLoading
-                ? "opacity-70 cursor-not-allowed"
-                : "active:scale-[0.98]"
+              isPaying ? "opacity-70 cursor-not-allowed" : "active:scale-[0.98]"
             }`}
           >
-            {isLoading ? (
+            {isPaying ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
                 SECURELY OPENING...
