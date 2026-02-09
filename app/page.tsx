@@ -6,14 +6,18 @@ import Hero from "@/components/Hero";
 import SessionBlueprint from "@/components/SessionBlueprint";
 import Mentor from "@/components/Mentor";
 import Footer from "@/components/Footer";
-import StickyCTA from "@/components/StickyCTA"; // Import it here
+import StickyCTA from "@/components/StickyCTA";
+import { useRazorpay } from "@/hooks/useRazorpay";
+import { SuccessOverlay } from "@/components/SuccessOverlay";
 
 export default function Home() {
   const [selectedGrade, setSelectedGrade] = useState("10");
 
+  const { isSuccess } = useRazorpay();
+
   return (
     <main className="bg-black min-h-screen pb-24 md:pb-0">
-      {" "}
+      {isSuccess && <SuccessOverlay />}{" "}
       {/* Added padding for mobile bottom nav */}
       <AnnouncementBanner />
       <Hero grade={selectedGrade} />

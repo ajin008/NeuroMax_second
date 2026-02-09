@@ -10,6 +10,11 @@ export interface RazorpayOptions {
     name: string;
     email: string;
   };
+  modal?: {
+    ondismiss?: () => void;
+    escape?: boolean;
+    backdropclose?: boolean;
+  };
   theme: {
     color: string;
   };

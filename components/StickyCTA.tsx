@@ -1,4 +1,6 @@
+"use client";
 import { useRazorpay } from "@/hooks/useRazorpay";
+import { Loader2 } from "lucide-react"; // Import the loader icon
 import React from "react";
 
 interface Props {
@@ -7,12 +9,13 @@ interface Props {
 
 const StickyCTA = ({ grade }: Props) => {
   const pricing: Record<string, string> = { "8": "90", "9": "95", "10": "99" };
-  const { handlePayment } = useRazorpay();
+
+  // 1. Destructure isLoading from your hook
+  const { handlePayment, isLoading } = useRazorpay();
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden">
-      {/* Glassmorphism Container */}
       <div className="bg-zinc-900/80 backdrop-blur-lg border border-zinc-800 rounded-3xl p-4 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex items-center justify-between gap-4">
-        {/* Price Info */}
         <div className="flex flex-col">
           <div className="flex items-baseline gap-1.5">
             <span className="text-2xl font-bold text-white">
@@ -27,12 +30,24 @@ const StickyCTA = ({ grade }: Props) => {
           </p>
         </div>
 
-        {/* CTA Button */}
+        {/* 2. Update Button with loading logic */}
         <button
           onClick={() => handlePayment(grade)}
-          className="flex-1 bg-blue-600 active:scale-95 transition-transform text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+          disabled={isLoading} // Prevent double clicks
+          className={`flex-1 flex items-center justify-center gap-2 bg-blue-600 transition-all text-white font-bold py-3.5 px-6 rounded-2xl text-sm shadow-[0_0_20px_rgba(37,99,235,0.3)] ${
+            isLoading
+              ? "opacity-70 cursor-not-allowed"
+              : "active:scale-95 hover:bg-blue-500"
+          }`}
         >
-          BUY NOW →
+          {isLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>WAITING...</span>
+            </>
+          ) : (
+            "BUY NOW →"
+          )}
         </button>
       </div>
     </div>

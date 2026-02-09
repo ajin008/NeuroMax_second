@@ -1,9 +1,10 @@
 import { useRazorpay } from "@/hooks/useRazorpay";
 import React from "react";
+import { Loader2 } from "lucide-react";
 
 const Hero = ({ grade }: { grade: string }) => {
   const pricing: Record<string, string> = { "8": "90", "9": "95", "10": "99" };
-  const { handlePayment } = useRazorpay();
+  const { handlePayment, isLoading } = useRazorpay();
   return (
     <section className="relative bg-black text-white pt-16 pb-20 px-6 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-125 bg-blue-600/5 blur-[120px] pointer-events-none" />
@@ -57,9 +58,21 @@ const Hero = ({ grade }: { grade: string }) => {
         <div className="w-full max-w-md flex flex-col items-center gap-6">
           <button
             onClick={() => handlePayment(grade)}
-            className="w-full bg-blue-600 hover:bg-blue-500 active:scale-[0.98] transition-all text-white font-bold py-5 rounded-2xl text-base shadow-[0_0_25px_rgba(37,99,235,0.25)] uppercase tracking-wide"
+            disabled={isLoading}
+            className={`w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 transition-all text-white font-bold py-5 rounded-2xl ${
+              isLoading
+                ? "opacity-70 cursor-not-allowed"
+                : "active:scale-[0.98]"
+            }`}
           >
-            BUY NOW & JOIN WHATSAPP →
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                SECURELY OPENING...
+              </>
+            ) : (
+              "BUY NOW & JOIN WHATSAPP →"
+            )}
           </button>
 
           <div className="flex items-center gap-2">

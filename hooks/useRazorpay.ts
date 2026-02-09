@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import { createRazorpayOrder } from "@/app/actions/payment";
 import { RazorpayOptions, RazorpayResponse } from "@/type/razorpay";
 
@@ -10,7 +10,13 @@ interface OrderData {
 }
 
 export const useRazorpay = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false); // New Success State
+
   const handlePayment = async (grade: string): Promise<void> => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     try {
       const order = (await createRazorpayOrder(grade)) as OrderData;
 
@@ -22,35 +28,33 @@ export const useRazorpay = () => {
         description: `Class ${grade} Board Prep 2026`,
         order_id: order.id,
         handler: function (response: RazorpayResponse): void {
-          // 1. Log payment for debugging if needed
-          console.log("Transaction Successful:", response.razorpay_payment_id);
+          setIsLoading(false);
+          setIsSuccess(true); // Trigger the overlay immediately
 
-          // 2. Define your target WhatsApp Group link
           const waGroupLink =
             "https://chat.whatsapp.com/YOUR_GROUP_INVITE_CODE";
 
-          // 3. Implement Success Delay (1.5 seconds)
-          // This gives the Razorpay 'Success' checkmark time to show up
           setTimeout(() => {
             window.location.href = waGroupLink;
-          }, 1500);
+          }, 2000); // Slightly longer for the user to read the message
         },
-        prefill: {
-          name: "Student Name",
-          email: "student@example.com",
+        modal: {
+          ondismiss: () => setIsLoading(false),
+          escape: true,
+          backdropclose: false,
         },
-        theme: {
-          color: "#2563eb",
-        },
+        prefill: { name: "Student Name", email: "student@example.com" },
+        theme: { color: "#2563eb" },
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
       console.error("Payment initiation failed:", error);
-      alert("Payment initiation failed. Please check your connection.");
+      alert("Payment failed. Please try again.");
+      setIsLoading(false);
     }
   };
 
-  return { handlePayment };
+  return { handlePayment, isLoading, isSuccess }; // Export isSuccess
 };
