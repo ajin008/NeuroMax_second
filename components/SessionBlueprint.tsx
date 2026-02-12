@@ -5,14 +5,14 @@ const SessionBlueprint = () => {
   const roadmap = [
     {
       label: "Date",
-      title: "10th February 2026",
-      subtitle: "Tuesday Evening Session",
+      title: "15th February 2026",
+      subtitle: "Tuesday Morning Session",
       // Changed icon color to amber-500
       icon: <Calendar className="w-5 h-5 text-amber-500" />,
     },
     {
       label: "Time",
-      title: "7:00 PM – 9:00 PM IST",
+      title: "10:00 AM – 1:30 PM IST",
       subtitle: "2 Hours Intensive Prep",
       icon: <Clock className="w-5 h-5 text-amber-500" />,
     },
