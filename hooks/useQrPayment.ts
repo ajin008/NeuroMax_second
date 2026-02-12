@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const GRADE_DATA: Record<string, { price: string; link: string }> = {
   "8": {
@@ -19,12 +19,12 @@ const GRADE_DATA: Record<string, { price: string; link: string }> = {
 export const useQrPayment = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [timer, setTimer] = useState(20);
+  const [timer, setTimer] = useState(20); // 1. Set initial state to 20
   const [currentGrade, setCurrentGrade] = useState("10");
 
   const handlePayment = (grade: string) => {
     setCurrentGrade(grade);
-    setTimer(30);
+    setTimer(20); // 2. Set reset value to 20
     setIsLoading(true);
   };
 
@@ -38,17 +38,17 @@ export const useQrPayment = () => {
     return () => clearInterval(interval);
   }, [isLoading, timer]);
 
-  const triggerSuccess = () => {
+  // Using useCallback prevents the "cascading render" error you saw earlier
+  const triggerSuccess = useCallback(() => {
     setIsLoading(false);
     setIsSuccess(true);
 
-    // Redirect to the specific group link based on the selected grade
     const targetLink = GRADE_DATA[currentGrade].link;
 
     setTimeout(() => {
       window.location.href = targetLink;
     }, 2000);
-  };
+  }, [currentGrade]);
 
   return {
     handlePayment,

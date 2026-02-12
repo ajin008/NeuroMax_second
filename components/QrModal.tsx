@@ -1,7 +1,14 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Loader2, MessageCircle, ShieldCheck, Copy, Check } from "lucide-react";
+import {
+  Loader2,
+  MessageCircle,
+  ShieldCheck,
+  Copy,
+  Check,
+  ExternalLink,
+} from "lucide-react";
 
 interface QrModalProps {
   isOpen: boolean;
@@ -23,6 +30,9 @@ export const QrModal = ({
 
   if (!isOpen) return null;
 
+  // Standard UPI Intent Link for mobile "Pay Now" button
+  const upiIntent = `upi://pay?pa=${upiId}&pn=Neuromax%20Academy&am=${price}&cu=INR`;
+
   const handleCopy = () => {
     navigator.clipboard.writeText(upiId);
     setCopied(true);
@@ -32,8 +42,10 @@ export const QrModal = ({
   const isTimeUp = timer === 0;
 
   return (
-    <div className="fixed inset-0 z-100 bg-black/10 backdrop-blur-xl flex items-center justify-center p-4">
-      <div className="bg-zinc-900 border border-white/10 p-6 md:p-8 rounded-[2.5rem] max-w-sm w-full text-center shadow-2xl relative overflow-hidden">
+    // Fixed: changed z-100 to z-[100] and bg-black/10 to bg-black/90
+    <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+      <div className="bg-zinc-900 border border-white/10 p-6 md:p-8 rounded-[2.5rem] max-w-sm w-full text-center shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-300">
+        {/* Grade Badge */}
         <div className="absolute top-4 right-4 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
           <span className="text-amber-500 text-[10px] font-bold">
             CLASS {grade}
@@ -57,8 +69,8 @@ export const QrModal = ({
         </div>
 
         {/* UPI ID COPY SECTION */}
-        <div className="mb-6">
-          <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2">
+        <div className="mb-6 space-y-2">
+          <p className="text-[10px] text-zinc-500 uppercase tracking-[0.2em]">
             Or copy UPI ID
           </p>
           <button
@@ -74,12 +86,21 @@ export const QrModal = ({
               <Copy className="w-4 h-4 text-zinc-600 group-hover:text-amber-500 shrink-0 transition-colors" />
             )}
           </button>
+
+          {/* Mobile Only: Pay via App Button */}
+          <a
+            href={upiIntent}
+            className="block md:hidden text-[10px] text-amber-500 font-bold underline flex items-center justify-center gap-1 py-1"
+          >
+            <ExternalLink className="w-3 h-3" /> PAY VIA UPI APP
+          </a>
         </div>
 
         {/* BUTTON SECTION */}
         <div className="space-y-4">
           <div className="flex items-center justify-center gap-2 text-[10px] text-zinc-500 uppercase tracking-widest">
             <ShieldCheck className="w-3 h-3 text-emerald-500" /> Secure Payment
+            Window
           </div>
 
           <button
@@ -98,6 +119,10 @@ export const QrModal = ({
             )}
             {isTimeUp ? "JOIN WHATSAPP GROUP" : `UNLOCKING IN ${timer}S`}
           </button>
+
+          <p className="text-[9px] text-zinc-600 italic">
+            Redirecting automatically after clicking Join
+          </p>
         </div>
       </div>
     </div>
