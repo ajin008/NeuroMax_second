@@ -32,7 +32,7 @@ export const useRazorpay = () => {
           setIsSuccess(true); // Trigger the overlay immediately
 
           const waGroupLink =
-            "https://chat.whatsapp.com/YOUR_GROUP_INVITE_CODE";
+            "https://chat.whatsapp.com/HsFo1L0TY3CCeysJBWY3KJ";
 
           setTimeout(() => {
             window.location.href = waGroupLink;
