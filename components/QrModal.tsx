@@ -32,7 +32,7 @@ export const QrModal = ({
   const isTimeUp = timer === 0;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-100 bg-black/10 backdrop-blur-xl flex items-center justify-center p-4">
       <div className="bg-zinc-900 border border-white/10 p-6 md:p-8 rounded-[2.5rem] max-w-sm w-full text-center shadow-2xl relative overflow-hidden">
         <div className="absolute top-4 right-4 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
           <span className="text-amber-500 text-[10px] font-bold">
