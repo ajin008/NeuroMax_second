@@ -19,7 +19,7 @@ const GRADE_DATA: Record<string, { price: string; link: string }> = {
 export const useQrPayment = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(20);
   const [currentGrade, setCurrentGrade] = useState("10");
 
   const handlePayment = (grade: string) => {
