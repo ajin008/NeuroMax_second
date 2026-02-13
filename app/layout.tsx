@@ -33,7 +33,7 @@ export default function RootLayout({
       </head>
 
       <body className={`${satoshi.variable} font-sans antialiased`}>
-        {/* GTM noscript fallback */}
+        {/* ✅ GTM noscript (must be first inside body) */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KBNF4R85"
